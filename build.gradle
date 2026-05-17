@@ -26,10 +26,13 @@ tasks.test {
     useJUnitPlatform()
 }
 
-tasks.register("archUnitTest", Test){
-    useJUnitPlatform(
-    )
-    include "**/architecture/**"
+tasks.register("archUnitTest", Test) {
+    useJUnitPlatform()
+    include "**/architecture/**/*Test.class"
     testClassesDirs = sourceSets.test.output.classesDirs
     classpath = sourceSets.test.runtimeClasspath
+}
+
+tasks.check {
+    dependsOn tasks.named("archUnitTest")
 }
