@@ -35,7 +35,8 @@ class ArchitectureTest {
     }
 
     @Test
-    void check_byte_code_fields_not_update() {
+    @DisplayName("legacyFullAddress 필드는 재대입하지 않는다")
+    void legacy_full_address_field_should_not_be_reassigned() {
 
         ArchCondition<JavaClass> notSetLegacyFullAddress =
             new ArchCondition<JavaClass>("not set legacyFullAddress") {
@@ -70,8 +71,8 @@ class ArchitectureTest {
 
 
     @Test
-    @DisplayName("가벼운 제한")
-    void practice_cannot_access_controller_to_repository() {
+    @DisplayName("controller는 repository 클래스를 직접 사용하지 않는다")
+    void controller_should_not_use_repository_classes() {
         ArchRuleDefinition.noClasses()
             .that().resideInAPackage("..controller..")
             .should().accessClassesThat().resideInAPackage("..repository..")
@@ -80,8 +81,8 @@ class ArchitectureTest {
 
 
     @Test
-    @DisplayName("무거운 제한 - 필드 자체 선언 금지")
-    void practice_cannot_access_controller_to_repository_should_not_have_fields() {
+    @DisplayName("controller는 repository 패키지에 의존하지 않는다")
+    void controller_should_not_depend_on_repository_package() {
         ArchRuleDefinition.noClasses()
             .that().resideInAPackage("..controller..")
             .should().dependOnClassesThat().resideInAPackage("..repository..")
@@ -89,8 +90,8 @@ class ArchitectureTest {
     }
 
     @Test
-    @DisplayName("domain class setter 금지")
-    void practice_cannot_access_domain_not_have_setter() {
+    @DisplayName("domain에는 setter 메서드를 선언하지 않는다")
+    void domain_should_not_declare_setter_methods() {
         ArchRuleDefinition.noMethods()
             .that().areDeclaredInClassesThat().resideInAPackage("..domain..")
             .should().haveNameMatching("set[A-Z].*")
@@ -100,7 +101,7 @@ class ArchitectureTest {
 
     @Test
     @DisplayName("특정 필드 getter 메서드 선언 금지")
-    void practice_cannot_access_getter() {
+    void address_master_should_not_declare_legacy_full_address_getter() {
         ArchRuleDefinition.noMethods()
             .that().areDeclaredInClassesThat().resideInAPackage("..domain..")
             .should().haveName("getLegacyFullAddress")
@@ -111,7 +112,7 @@ class ArchitectureTest {
 
     @Test
     @DisplayName("특정 필드 getter 메서드 호출 금지")
-    void practice_cannot_call_getter() {
+    void legacy_full_address_getter_should_not_be_called() {
         noClasses()
             .should().callMethod(AddressMaster.class, "getLegacyFullAddress")
             .allowEmptyShould(true)
@@ -119,8 +120,8 @@ class ArchitectureTest {
     }
 
     @Test
-    @DisplayName("바이트 코드 수준에서 참조 금지 확인")
-    void practice_byte_code_dont_access_field() {
+    @DisplayName("legacy 계열 필드는 바이트코드 수준에서 재대입하지 않는다")
+    void legacy_fields_should_not_be_reassigned_by_bytecode_access() {
 
         ArchCondition<JavaClass> noFieldAccessCondition = new ArchCondition<JavaClass>(
             "dont change legacyFields") {

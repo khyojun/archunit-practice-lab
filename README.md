@@ -235,7 +235,7 @@ public void updateLegacyFullAddress(String legacyFullAddress) {
 
 주의:
 
-현재 `practice_byte_code_dont_access_field`는 `AddressMaster.class`만 import합니다.
+현재 `legacy_fields_should_not_be_reassigned_by_bytecode_access`는 `AddressMaster.class`만 import합니다.
 
 ```java
 JavaClasses javaClass = new ClassFileImporter().importClasses(AddressMaster.class);
@@ -311,7 +311,7 @@ getLegacyFullAddress를 호출하면 안 된다.
 2. `AddressController`에서 repository 직접 접근 주석을 풀고 실패를 확인합니다.
 3. `AddressMaster`에서 `@Getter(AccessLevel.NONE)`을 제거하고 getter 생성 금지 규칙 실패를 확인합니다.
 4. `AddressService`에서 `getLegacyFullAddress()` 호출 주석을 풀고 호출 금지 규칙 실패를 확인합니다.
-5. `practice_byte_code_dont_access_field`의 import 대상을 `AddressMasterWithUpdateFieldMethod.class`로 바꾸고 필드 재대입 규칙 실패를 확인합니다.
+5. `legacy_fields_should_not_be_reassigned_by_bytecode_access`의 import 대상을 `AddressMasterWithUpdateFieldMethod.class`로 바꾸고 필드 재대입 규칙 실패를 확인합니다.
 
 각 연습 후에는 코드를 원복하고 다시 테스트가 통과하는지 확인하세요.
 
